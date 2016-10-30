@@ -27,6 +27,7 @@ angular.module('app.controllers', [])
       {}
     ).then (
         function (response) {
+          console.log(response);
           data = response.data;
           if(data.id != -1){
             for (elem in $scope.data.availableOptions){
@@ -99,11 +100,35 @@ angular.module('app.controllers', [])
 
 }])
    
-.controller('recommendationsCtrl', function($scope) {
-  $scope.recommendations = Recommendation.query(function() {
-    console.log($scope.recommendations);
-  });
-})
+.controller('recommendationsCtrl', ['$scope', '$http', 'Recommendation', function($scope, $http, Recommendation) {
+  
+  $scope.getAnswer = function(){
+    $http.post(
+      'http://0.0.0.0:8000/api/answerUser',
+      {
+        'user': 1,
+        'question': -1
+      }, 
+      {}
+    ).then (
+        function (response) {
+          console.log(response.data);
+          $scope.recommendations = response.data.response;
+          for (var i = $scope.recommendations.length - 1; i >= 0; i--){
+            $scope.recommendations[i].show = false;
+          }
+          console.log($scope.recommendations);
+        },
+        function (response) {
+          console.log("Error");
+          console.log(response);
+        }
+    );
+  };
+
+  $scope.getAnswer();
+
+}])
    
 .controller('formationCtrl', function($scope, Tip) {
   $scope.tips = Tip.query(function() {

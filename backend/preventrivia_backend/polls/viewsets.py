@@ -60,13 +60,46 @@ class AnswerUserView(APIView):
     def post(self, request, *args, **kwargs):
         try:
             user = request.data.get('user', None)
-            question = request.data.get('question', None)
+            question_id = request.data.get('question', None)
             try:
-                answerData = (Answer.objects
-                                    .filter(user=user)
-                                    .filter(question=question))[0]
-                answerData = {'id': answerData.id,
-                              'choice': answerData.choice.id}
+                answerData = Answer.objects.filter(user=user)
+
+                if(question_id == -1):
+                    recommendations_filter = []
+                    recommendations = Recommendation.objects.all()
+                    categories = Category.objects.all()
+
+                    data_recommendation = {}
+                    for i in range(len(categories)):
+                        data_recommendation[categories[i].id] = {'name': categories[i].name, 'recommendation':[], 
+                            'bad_data' : 0, 'regular_data' : 0, 'good_data' : 0}
+
+                    for i in range(len(answerData)):
+                        choice_filter = answerData[i].choice
+                        recommendation = recommendations.filter(choice=choice_filter)
+
+                        if (len(recommendation) > 0):
+
+                            recommendation = recommendation[0]
+                            data_recommendation[recommendation.category_id]['recommendation'].append(recommendation.text)
+                            if choice_filter.value < 3:
+                                data_recommendation[recommendation.category_id]['bad_data'] += 1
+                            elif choice_filter.value == 3:
+                                data_recommendation[recommendation.category_id]['regular_data'] += 1
+                            elif choice_filter.value > 3:
+                                data_recommendation[recommendation.category_id]['good_data'] += 1   
+
+                    answerData = {'id': -1,
+                              'response': data_recommendation,
+                              }
+
+                else:
+                    for i in range(len(answerData)):
+                        if(answerData[i].id == question_id):
+                            answerData = answerData[i]
+                            break
+                    answerData = {'id': answerData.id,'choice': answerData.choice.id}
+
             except:
                 answerData = {'id': -1,
                               'response': 'Answer does not exist'}
