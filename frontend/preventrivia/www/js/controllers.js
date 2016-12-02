@@ -19,7 +19,7 @@ angular.module('app.controllers', [])
 
   $scope.getAnswer = function(){
     $http.post(
-      'http://0.0.0.0:8000/api/answerUser',
+      'http://preventrivia2.herokuapp.com/api/answerUser',
       {
         'user': 1,
         'question': $scope.actual_question.id
@@ -104,7 +104,7 @@ angular.module('app.controllers', [])
   
   $scope.getAnswer = function(){
     $http.post(
-      'http://0.0.0.0:8000/api/answerUser',
+      'http://preventrivia2.herokuapp.com/api/answerUser',
       {
         'user': 1,
         'question': -1

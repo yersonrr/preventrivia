@@ -9,7 +9,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
                        'app.directives', 'ngResource'])
     
 // api url constant to link to backend server
-.constant('ApiUrl', 'http://localhost:8000')
+.constant('ApiUrl', 'http://preventrivia2.herokuapp.com')
     
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

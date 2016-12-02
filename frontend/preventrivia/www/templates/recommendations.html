@@ -1,7 +1,11 @@
 <ion-view title="Recomendaciones" id="page3" class=" " ng-controller="recommendationsCtrl" ng-init="getAnswer()">
     <ion-content padding="true" class="has-header">
         <ion-list>
-            
+            <div class="col text-center"> 
+                <button class="button button-outline button-positive" ng-click="getAnswer()">
+                    Actualizar Datos
+                </button>
+            </div>
         </ion-list>
 
         <ion-list id="recomendaciones-list1" class=" ">
@@ -11,7 +15,7 @@
                     <tr style="text-align:center">
                         <td bgcolor="#00FF00"><h3>Bueno {{r.good_data*100/(r.good_data+r.regular_data+r.bad_data)}}% </h3></td>
                         <td bgcolor="#FFFF00"><h3>Regular {{r.regular_data*100/(r.good_data+r.regular_data+r.bad_data)}}% </h3></td>
-                        <td bgcolor="#FF0000"><h3>Malo {{r.bad_data*100/(r.good_data+r.regular_data+r.bad_data)}}% </h3></td>
+                        <td bgcolor="#FF3F3F"><h3>Malo {{r.bad_data*100/(r.good_data+r.regular_data+r.bad_data)}}% </h3></td>
                     </tr>
                 </table>
                 <p></p>

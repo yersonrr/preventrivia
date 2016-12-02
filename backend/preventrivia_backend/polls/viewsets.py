@@ -81,7 +81,9 @@ class AnswerUserView(APIView):
                         if (len(recommendation) > 0):
 
                             recommendation = recommendation[0]
-                            data_recommendation[recommendation.category_id]['recommendation'].append(recommendation.text)
+                            if (recommendation.text != "")
+                                data_recommendation[recommendation.category_id]['recommendation'].append(recommendation.text)
+                                
                             if choice_filter.value < 3:
                                 data_recommendation[recommendation.category_id]['bad_data'] += 1
                             elif choice_filter.value == 3:
