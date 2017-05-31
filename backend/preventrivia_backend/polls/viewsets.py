@@ -76,20 +76,19 @@ class AnswerUserView(APIView):
 
                     for i in range(len(answerData)):
                         choice_filter = answerData[i].choice
-                        recommendation = recommendations.filter(choice=choice_filter)
+                        recommendation = Recommendation.objects.filter(choice=choice_filter)
+
+                        if choice_filter.value > 3:
+                            data_recommendation[choice_filter.question.category_id]['good_data'] += 1
+                        elif choice_filter.value == 3:
+                            data_recommendation[choice_filter.question.category_id]['regular_data'] += 1
+                        else:
+                            data_recommendation[choice_filter.question.category_id]['bad_data'] += 1
 
                         if (len(recommendation) > 0):
-
                             recommendation = recommendation[0]
-                            if (recommendation.text != "")
-                                data_recommendation[recommendation.category_id]['recommendation'].append(recommendation.text)
-                                
-                            if choice_filter.value < 3:
-                                data_recommendation[recommendation.category_id]['bad_data'] += 1
-                            elif choice_filter.value == 3:
-                                data_recommendation[recommendation.category_id]['regular_data'] += 1
-                            elif choice_filter.value > 3:
-                                data_recommendation[recommendation.category_id]['good_data'] += 1   
+                            if (recommendation.text != ""):
+                                data_recommendation[recommendation.category_id]['recommendation'].append(recommendation.text)   
 
                     answerData = {'id': -1,
                               'response': data_recommendation,
